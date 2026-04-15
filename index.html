@@ -1,0 +1,1509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Karigar — Art Lives On When Artists Are Seen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#fff2dc;
+  --crimson:#64130b;
+  --crimson-deep:#3d0b06;
+  --crimson-mid:#8a1c12;
+  --crimson-light:rgba(100,19,11,0.08);
+  --crimson-border:rgba(100,19,11,0.18);
+  --ink:#1a0a08;
+  --ink-mid:#5c3d35;
+  --ink-soft:#9c7b72;
+  --gold:#b5813a;
+  --cream-dark:#f5e4c0;
+  --cream-deep:#ecdab8;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  background:var(--cream);
+  color:var(--ink);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ── GRAIN OVERLAY ── */
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:9999;opacity:.5;
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  background:var(--cream);
+  border-bottom:1px solid var(--crimson-border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 2.5rem;
+  height:64px;
+}
+.nav-logo{
+  font-family:'Playfair Display',serif;
+  font-size:1.35rem;font-weight:500;
+  color:var(--crimson);
+  letter-spacing:0.02em;
+  cursor:pointer;
+  display:flex;align-items:baseline;gap:0.15rem;
+}
+.nav-logo span{font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-mid);font-family:'Cormorant Garamond',serif;margin-left:0.5rem;font-weight:400;align-self:center;}
+.nav-links{display:flex;align-items:center;gap:2rem;}
+.nav-link{
+  font-family:'Cormorant Garamond',serif;
+  font-size:0.95rem;letter-spacing:0.06em;text-transform:uppercase;
+  color:var(--ink-mid);cursor:pointer;
+  border-bottom:1.5px solid transparent;
+  padding-bottom:2px;
+  transition:color .25s,border-color .25s;
+  background:none;border-top:none;border-left:none;border-right:none;
+}
+.nav-link:hover,.nav-link.active{color:var(--crimson);border-bottom-color:var(--crimson);}
+.nav-donate{
+  background:var(--crimson);color:var(--cream);
+  border:none;cursor:pointer;
+  font-family:'Cormorant Garamond',serif;
+  font-size:0.9rem;letter-spacing:0.08em;text-transform:uppercase;
+  padding:8px 20px;
+  transition:background .25s;
+}
+.nav-donate:hover{background:var(--crimson-deep);}
+
+/* ── PAGES ── */
+.page{display:none;padding-top:64px;min-height:100vh;animation:fadeIn .4s ease;}
+.page.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── SHARED COMPONENTS ── */
+.section-eyebrow{
+  font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--crimson);font-family:'Cormorant Garamond',serif;font-weight:500;
+  margin-bottom:0.75rem;
+}
+.section-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2rem,4vw,3.2rem);
+  font-weight:400;line-height:1.15;
+  color:var(--ink);
+}
+.section-title em{font-style:italic;color:var(--crimson);}
+.body-text{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.15rem;line-height:1.85;
+  color:var(--ink-mid);font-weight:300;
+}
+.divider{border:none;border-top:1px solid var(--crimson-border);margin:0;}
+.risk-badge{
+  display:inline-block;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;
+  padding:3px 9px;font-family:'Cormorant Garamond',serif;font-weight:500;
+}
+.risk-critical{background:#4a0c07;color:#f5d5c8;}
+.risk-vulnerable{background:#7a4c1a;color:#f5e4c2;}
+.risk-stable{background:#1a3d1a;color:#c8e8c8;}
+.container{max-width:1200px;margin:0 auto;padding:0 2.5rem;}
+
+/* ── HOME PAGE ── */
+.hero{
+  min-height:calc(100vh - 64px);
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:0;
+  position:relative;overflow:hidden;
+}
+.hero-left{
+  padding:5rem 3rem 5rem 2.5rem;
+  display:flex;flex-direction:column;justify-content:center;
+  border-right:1px solid var(--crimson-border);
+  position:relative;
+}
+.hero-eyebrow{
+  font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:1.5rem;
+  display:flex;align-items:center;gap:0.75rem;
+}
+.hero-eyebrow::before{content:'';display:block;width:32px;height:1px;background:var(--gold);}
+.hero-headline{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2.8rem,5vw,4.5rem);
+  font-weight:400;line-height:1.08;
+  color:var(--ink);
+  margin-bottom:2rem;
+}
+.hero-headline em{font-style:italic;color:var(--crimson);}
+.hero-body{
+  font-size:1.1rem;line-height:1.9;
+  color:var(--ink-mid);font-weight:300;max-width:520px;
+  margin-bottom:2.5rem;
+}
+.hero-cta-group{display:flex;gap:1rem;align-items:center;flex-wrap:wrap;}
+.btn-primary{
+  background:var(--crimson);color:var(--cream);
+  border:1px solid var(--crimson);cursor:pointer;
+  font-family:'Cormorant Garamond',serif;
+  font-size:1rem;letter-spacing:0.08em;
+  padding:13px 28px;
+  transition:background .25s,transform .2s;
+}
+.btn-primary:hover{background:var(--crimson-deep);transform:translateY(-1px);}
+.btn-secondary{
+  background:transparent;color:var(--crimson);
+  border:1px solid var(--crimson-border);cursor:pointer;
+  font-family:'Cormorant Garamond',serif;
+  font-size:1rem;letter-spacing:0.06em;
+  padding:13px 28px;
+  transition:border-color .25s,color .25s;
+}
+.btn-secondary:hover{border-color:var(--crimson);color:var(--crimson-deep);}
+.hero-right{
+  padding:5rem 2.5rem;
+  display:flex;flex-direction:column;justify-content:center;
+  background:var(--cream-dark);
+  gap:1.5rem;
+}
+.hero-stat{border-left:2px solid var(--crimson);padding:0.75rem 1.25rem;}
+.hero-stat-num{
+  font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:400;
+  color:var(--crimson);line-height:1;
+}
+.hero-stat-label{
+  font-size:0.85rem;letter-spacing:0.06em;text-transform:uppercase;
+  color:var(--ink-mid);margin-top:4px;
+}
+.hero-scroll{
+  position:absolute;bottom:2rem;left:2.5rem;
+  font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--ink-soft);
+  display:flex;align-items:center;gap:0.5rem;
+}
+.hero-scroll::after{content:'';display:block;width:24px;height:1px;background:var(--ink-soft);}
+
+/* HOME INTRO SECTION */
+.intro-section{padding:6rem 0;border-bottom:1px solid var(--crimson-border);}
+.intro-grid{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center;}
+.intro-quote{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1.4rem,2.5vw,2rem);
+  font-weight:400;font-style:italic;
+  line-height:1.5;color:var(--crimson);
+  border-left:3px solid var(--crimson);
+  padding-left:1.5rem;
+}
+.intro-text{font-size:1.05rem;line-height:1.9;color:var(--ink-mid);font-weight:300;}
+.intro-text p+p{margin-top:1rem;}
+
+/* HOME GALLERY STRIP */
+.gallery-section{padding:5rem 0;border-bottom:1px solid var(--crimson-border);}
+.gallery-label{text-align:center;margin-bottom:3rem;}
+.gallery-strip{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1.5rem;
+}
+.gallery-card{
+  aspect-ratio:4/5;
+  background:var(--cream-dark);
+  position:relative;overflow:hidden;
+  cursor:pointer;
+}
+.gallery-card:hover .gallery-overlay{opacity:1;}
+.gallery-card-art{width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
+.gallery-overlay{
+  position:absolute;inset:0;
+  background:rgba(26,10,8,0.82);
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:1.5rem;
+  opacity:0;transition:opacity .3s;
+}
+.gallery-overlay-title{
+  font-family:'Playfair Display',serif;font-size:1.2rem;
+  color:var(--cream);margin-bottom:0.3rem;
+}
+.gallery-overlay-sub{font-size:0.85rem;color:rgba(255,242,220,0.7);letter-spacing:0.04em;}
+
+/* HOME MISSION */
+.mission-section{
+  padding:6rem 0;
+  background:var(--crimson);
+  color:var(--cream);
+}
+.mission-inner{max-width:800px;margin:0 auto;text-align:center;padding:0 2.5rem;}
+.mission-eyebrow{font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,242,220,0.6);margin-bottom:1.5rem;}
+.mission-text{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1.4rem,2.5vw,2rem);
+  font-weight:400;line-height:1.6;
+  color:var(--cream);
+}
+.mission-text em{font-style:italic;opacity:0.8;}
+
+/* HOME CTA */
+.cta-section{padding:6rem 0;}
+.cta-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;}
+.cta-form{display:flex;flex-direction:column;gap:1rem;}
+.form-group{display:flex;flex-direction:column;gap:6px;}
+.form-label{font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-mid);}
+.form-input,.form-textarea{
+  background:var(--cream-dark);
+  border:1px solid var(--crimson-border);
+  padding:12px 14px;
+  font-family:'Cormorant Garamond',serif;
+  font-size:1rem;color:var(--ink);
+  outline:none;
+  transition:border-color .2s;
+  resize:none;
+}
+.form-input:focus,.form-textarea:focus{border-color:var(--crimson);}
+
+/* ── ABOUT PAGE ── */
+.about-hero{
+  padding:5rem 0 4rem;
+  border-bottom:1px solid var(--crimson-border);
+}
+.about-hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
+.story-section{padding:5rem 0;border-bottom:1px solid var(--crimson-border);}
+.founders-section{padding:5rem 0;border-bottom:1px solid var(--crimson-border);}
+.founder-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2.5rem;margin-top:3rem;}
+.founder-card{border-top:2px solid var(--crimson);padding-top:1.5rem;}
+.founder-name{
+  font-family:'Playfair Display',serif;font-size:1.3rem;
+  color:var(--ink);margin-bottom:0.3rem;
+}
+.founder-role{font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;}
+.founder-bio{font-size:1rem;line-height:1.8;color:var(--ink-mid);font-weight:300;}
+.ecosystem-section{padding:5rem 0;border-bottom:1px solid var(--crimson-border);}
+.eco-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;margin-top:3rem;}
+.eco-card{
+  background:var(--cream-dark);
+  padding:2.5rem;
+  border-top:2px solid var(--crimson);
+}
+.eco-card-num{
+  font-family:'Playfair Display',serif;font-size:3rem;
+  color:var(--crimson-border);font-weight:400;line-height:1;
+  margin-bottom:1rem;
+}
+.eco-card-title{font-family:'Playfair Display',serif;font-size:1.3rem;margin-bottom:1rem;color:var(--ink);}
+.eco-card-body{font-size:1rem;line-height:1.8;color:var(--ink-mid);font-weight:300;}
+.eco-list{list-style:none;margin-top:1rem;}
+.eco-list li{
+  padding:0.5rem 0;
+  border-bottom:1px solid var(--crimson-border);
+  font-size:0.95rem;color:var(--ink-mid);
+  padding-left:1rem;position:relative;
+}
+.eco-list li::before{content:'—';position:absolute;left:0;color:var(--crimson);}
+.problem-section{padding:5rem 0;background:var(--cream-dark);}
+
+/* ── MAP PAGE ── */
+.map-page-layout{
+  display:grid;grid-template-columns:380px 1fr;
+  height:calc(100vh - 64px);
+}
+.map-sidebar{
+  background:var(--cream);
+  border-right:1px solid var(--crimson-border);
+  overflow-y:auto;
+  display:flex;flex-direction:column;
+}
+.map-sidebar-header{
+  padding:1.5rem;
+  border-bottom:1px solid var(--crimson-border);
+  flex-shrink:0;
+}
+.map-sidebar-title{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--ink);margin-bottom:0.5rem;}
+.map-controls{padding:1rem 1.5rem;border-bottom:1px solid var(--crimson-border);flex-shrink:0;}
+.map-toggle{
+  display:flex;align-items:center;gap:0.75rem;
+  font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-mid);cursor:pointer;
+}
+.toggle-switch{
+  width:36px;height:20px;
+  background:var(--crimson-border);
+  border-radius:10px;position:relative;transition:background .2s;
+}
+.toggle-switch.on{background:var(--crimson);}
+.toggle-knob{
+  width:16px;height:16px;background:white;border-radius:50%;
+  position:absolute;top:2px;left:2px;transition:left .2s;
+}
+.toggle-switch.on .toggle-knob{left:18px;}
+.legend{
+  display:flex;flex-direction:column;gap:0.5rem;margin-top:0.75rem;
+}
+.legend-item{display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;color:var(--ink-mid);}
+.legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.cluster-list{flex:1;overflow-y:auto;}
+.cluster-item{
+  padding:1.2rem 1.5rem;
+  border-bottom:1px solid var(--crimson-border);
+  cursor:pointer;transition:background .2s;
+}
+.cluster-item:hover,.cluster-item.active{background:var(--crimson-light);}
+.cluster-item-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.3rem;}
+.cluster-item-name{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--ink);}
+.cluster-item-area{font-size:0.8rem;color:var(--ink-soft);}
+.detail-panel{
+  padding:1.5rem;
+  border-bottom:1px solid var(--crimson-border);
+  background:var(--cream-dark);
+  display:none;
+}
+.detail-panel.visible{display:block;}
+.detail-panel-title{font-family:'Playfair Display',serif;font-size:1.3rem;margin-bottom:0.5rem;}
+.detail-master{font-size:0.85rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;}
+.detail-desc{font-size:0.95rem;line-height:1.75;color:var(--ink-mid);font-weight:300;margin-bottom:1rem;}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.detail-row{background:var(--cream);padding:8px 10px;}
+.detail-key{font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-soft);}
+.detail-val{font-size:0.9rem;color:var(--ink);margin-top:2px;}
+.detail-actions{display:flex;gap:0.75rem;margin-top:1rem;}
+.detail-btn{
+  flex:1;background:none;border:1px solid var(--crimson-border);cursor:pointer;
+  font-family:'Cormorant Garamond',serif;font-size:0.85rem;letter-spacing:0.06em;
+  padding:8px;color:var(--crimson);transition:background .2s,color .2s;
+}
+.detail-btn:hover{background:var(--crimson);color:var(--cream);}
+.detail-btn.primary{background:var(--crimson);color:var(--cream);border-color:var(--crimson);}
+.detail-btn.primary:hover{background:var(--crimson-deep);}
+
+/* MAP SVG AREA */
+.map-canvas{
+  background:var(--cream-dark);
+  position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+}
+.map-svg-wrap{width:100%;height:100%;position:relative;}
+#jaipur-map{width:100%;height:100%;}
+.map-pin{cursor:pointer;transition:transform .2s;}
+.map-pin:hover{transform:scale(1.2);}
+.map-pin.active .pin-circle{fill:var(--crimson-deep);}
+.pin-label{
+  font-family:'Cormorant Garamond',serif;
+  font-size:11px;fill:var(--ink);
+  pointer-events:none;
+}
+.heat-overlay{opacity:0;transition:opacity .5s;}
+.heat-overlay.visible{opacity:1;}
+
+/* ── ARCHIVE PAGE ── */
+.archive-hero{padding:5rem 0 3rem;border-bottom:1px solid var(--crimson-border);}
+.archive-tabs{
+  display:flex;gap:0;border-bottom:1px solid var(--crimson-border);
+  margin-bottom:3rem;
+}
+.archive-tab{
+  padding:1rem 2rem;
+  font-family:'Cormorant Garamond',serif;
+  font-size:0.9rem;letter-spacing:0.1em;text-transform:uppercase;
+  cursor:pointer;color:var(--ink-soft);
+  border-bottom:2px solid transparent;
+  background:none;border-top:none;border-left:none;border-right:none;
+  transition:color .2s,border-color .2s;
+}
+.archive-tab.active{color:var(--crimson);border-bottom-color:var(--crimson);}
+.archive-tab-content{display:none;}
+.archive-tab-content.active{display:block;}
+.video-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-bottom:3rem;}
+.video-card{cursor:pointer;}
+.video-thumb{
+  aspect-ratio:16/9;
+  background:var(--cream-dark);
+  border:1px solid var(--crimson-border);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+  margin-bottom:0.75rem;
+}
+.video-play-btn{
+  width:48px;height:48px;background:rgba(100,19,11,0.85);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .2s,transform .2s;
+}
+.video-card:hover .video-play-btn{background:var(--crimson);transform:scale(1.08);}
+.video-play-icon{
+  width:0;height:0;
+  border-top:10px solid transparent;border-bottom:10px solid transparent;
+  border-left:16px solid white;margin-left:3px;
+}
+.video-type{font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:4px;}
+.video-title{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--ink);margin-bottom:4px;}
+.video-craft{font-size:0.85rem;color:var(--ink-soft);}
+.doc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+.doc-card{
+  background:var(--cream-dark);
+  border:1px solid var(--crimson-border);
+  padding:1.5rem;
+  border-top:2px solid var(--crimson);
+}
+.doc-icon{font-size:1.5rem;margin-bottom:0.75rem;opacity:.6;}
+.doc-type{font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+.doc-title{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--ink);margin-bottom:6px;}
+.doc-desc{font-size:0.9rem;color:var(--ink-mid);line-height:1.6;}
+
+/* ── EXHIBITION PAGE ── */
+.exhibition-hero{padding:5rem 0 3rem;border-bottom:1px solid var(--crimson-border);}
+.exhibition-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:0;
+  border-top:1px solid var(--crimson-border);
+}
+.painting-card{
+  border-right:1px solid var(--crimson-border);
+  border-bottom:1px solid var(--crimson-border);
+  cursor:pointer;overflow:hidden;
+}
+.painting-card:nth-child(3n){border-right:none;}
+.painting-art{
+  aspect-ratio:4/5;
+  position:relative;overflow:hidden;
+}
+.painting-art-inner{width:100%;height:100%;transition:transform .4s;}
+.painting-card:hover .painting-art-inner{transform:scale(1.04);}
+.painting-info{
+  padding:1.25rem;
+  border-top:1px solid var(--crimson-border);
+}
+.painting-num{
+  font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--ink-soft);margin-bottom:4px;
+}
+.painting-title{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--ink);margin-bottom:4px;}
+.painting-craft{font-size:0.85rem;color:var(--ink-mid);}
+.painting-footer{display:flex;align-items:center;justify-content:space-between;margin-top:10px;}
+.qr-hint{font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-soft);}
+.qr-icon{
+  width:28px;height:28px;
+  display:grid;grid-template-columns:1fr 1fr;gap:3px;padding:4px;
+  background:var(--cream-dark);
+}
+.qr-square{background:var(--crimson);}
+
+/* PAINTING MODAL */
+.modal-overlay{
+  display:none;position:fixed;inset:0;background:rgba(26,10,8,0.88);z-index:2000;
+  align-items:center;justify-content:center;padding:2rem;
+}
+.modal-overlay.open{display:flex;}
+.modal-box{
+  background:var(--cream);max-width:700px;width:100%;
+  max-height:90vh;overflow-y:auto;
+  border-top:3px solid var(--crimson);
+}
+.modal-header{padding:2rem 2rem 1rem;border-bottom:1px solid var(--crimson-border);}
+.modal-art{width:100%;aspect-ratio:16/9;background:var(--cream-dark);display:flex;align-items:center;justify-content:center;}
+.modal-close{
+  float:right;background:none;border:none;cursor:pointer;
+  font-size:1.2rem;color:var(--ink-soft);margin-top:-0.5rem;
+  font-family:'Cormorant Garamond',serif;
+}
+.modal-body{padding:2rem;}
+.modal-eyebrow{font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem;}
+.modal-title{font-family:'Playfair Display',serif;font-size:2rem;margin-bottom:1.5rem;color:var(--ink);}
+.modal-section{margin-bottom:1.5rem;}
+.modal-section-label{font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--crimson);margin-bottom:0.5rem;}
+.modal-section-text{font-size:1rem;line-height:1.8;color:var(--ink-mid);font-weight:300;}
+
+/* ── DONATION PAGE ── */
+.donation-hero{padding:5rem 0 3rem;border-bottom:1px solid var(--crimson-border);}
+.donation-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;padding:5rem 0;}
+.donation-impact{border-bottom:1px solid var(--crimson-border);padding-bottom:5rem;margin-bottom:0;}
+.impact-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2rem;}
+.impact-card{
+  background:var(--cream-dark);
+  border-top:2px solid var(--crimson);
+  padding:1.5rem;
+}
+.impact-num{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--crimson);}
+.impact-label{font-size:0.85rem;color:var(--ink-mid);line-height:1.5;margin-top:6px;}
+.bank-details{
+  background:var(--cream-dark);
+  border:1px solid var(--crimson-border);
+  padding:2rem;margin-top:2rem;
+}
+.bank-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:0.75rem 0;border-bottom:1px solid var(--crimson-border);
+  font-size:1rem;
+}
+.bank-row:last-child{border-bottom:none;}
+.bank-key{color:var(--ink-soft);font-size:0.85rem;}
+.bank-val{color:var(--ink);font-weight:500;}
+.donation-faq{padding:5rem 0;border-top:1px solid var(--crimson-border);}
+.faq-item{border-bottom:1px solid var(--crimson-border);padding:1.25rem 0;}
+.faq-q{font-family:'Playfair Display',serif;font-size:1.1rem;cursor:pointer;color:var(--ink);display:flex;justify-content:space-between;align-items:center;}
+.faq-toggle{color:var(--crimson);font-size:1.2rem;transition:transform .2s;}
+.faq-item.open .faq-toggle{transform:rotate(45deg);}
+.faq-a{font-size:1rem;line-height:1.8;color:var(--ink-mid);font-weight:300;max-height:0;overflow:hidden;transition:max-height .3s,padding .3s;}
+.faq-item.open .faq-a{max-height:200px;padding-top:0.75rem;}
+
+/* ── FOOTER ── */
+footer{
+  background:var(--crimson-deep);
+  color:rgba(255,242,220,0.8);
+  padding:3rem 0 2rem;
+}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:4rem;margin-bottom:3rem;}
+.footer-brand{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--cream);margin-bottom:0.5rem;}
+.footer-tagline{font-size:0.85rem;letter-spacing:0.08em;color:rgba(255,242,220,0.5);}
+.footer-body{font-size:0.9rem;line-height:1.7;margin-top:1rem;color:rgba(255,242,220,0.6);}
+.footer-heading{font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:1rem;color:rgba(255,242,220,0.5);}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:0.5rem;}
+.footer-links li{font-size:0.9rem;cursor:pointer;transition:color .2s;}
+.footer-links li:hover{color:var(--cream);}
+.footer-bottom{
+  border-top:1px solid rgba(255,242,220,0.1);padding-top:1.5rem;
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:0.8rem;color:rgba(255,242,220,0.4);
+}
+
+/* SVG CRAFT PATTERNS */
+.craft-bg-bluepottery{background:linear-gradient(135deg,#d4e8f5 0%,#b8d5ec 50%,#a0c4e3 100%);}
+.craft-bg-blockprint{background:linear-gradient(135deg,#f5e8d4 0%,#e8d4b8 50%,#dcc8a0 100%);}
+.craft-bg-miniature{background:linear-gradient(135deg,#f5f0e8 0%,#f0e8d8 50%,#e8d8c4 100%);}
+.craft-bg-leheriya{background:linear-gradient(135deg,#e8d4f5 0%,#d4bce8 50%,#c4a8e0 100%);}
+.craft-bg-lac{background:linear-gradient(135deg,#f5d4d4 0%,#e8bcbc 50%,#dca8a8 100%);}
+.craft-bg-meenakari{background:linear-gradient(135deg,#d4f5e8 0%,#bcead4 50%,#a8dfc4 100%);}
+.craft-bg-stone{background:linear-gradient(135deg,#ede8df 0%,#ddd4c4 50%,#cec4ae 100%);}
+.craft-bg-carpet{background:linear-gradient(135deg,#f5eed4 0%,#eadcb4 50%,#dfcca0 100%);}
+.craft-bg-kundan{background:linear-gradient(135deg,#f5e8c8 0%,#f0dca8 50%,#e8cc88 100%);}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  nav{padding:0 1.25rem;}
+  .nav-links{display:none;}
+  .hero{grid-template-columns:1fr;min-height:auto;}
+  .hero-left{padding:3rem 1.25rem;}
+  .hero-right{display:none;}
+  .intro-grid,.about-hero-grid,.eco-grid,.donation-grid,.cta-grid,.founder-grid{grid-template-columns:1fr;gap:2rem;}
+  .gallery-strip,.video-grid,.doc-grid,.impact-cards{grid-template-columns:1fr 1fr;}
+  .exhibition-grid{grid-template-columns:1fr 1fr;}
+  .exhibition-grid .painting-card:nth-child(3n){border-right:1px solid var(--crimson-border);}
+  .exhibition-grid .painting-card:nth-child(2n){border-right:none;}
+  .map-page-layout{grid-template-columns:1fr;grid-template-rows:auto 1fr;}
+  .map-sidebar{max-height:50vh;}
+  .container{padding:0 1.25rem;}
+  .footer-grid{grid-template-columns:1fr;gap:2rem;}
+}
+@media(max-width:560px){
+  .gallery-strip,.video-grid,.doc-grid,.impact-cards{grid-template-columns:1fr;}
+  .exhibition-grid{grid-template-columns:1fr;}
+  .exhibition-grid .painting-card{border-right:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">
+    Karigar
+    <span>Jaipur</span>
+  </div>
+  <div class="nav-links">
+    <button class="nav-link active" onclick="showPage('home')">Home</button>
+    <button class="nav-link" onclick="showPage('about')">About</button>
+    <button class="nav-link" onclick="showPage('map')">Map</button>
+    <button class="nav-link" onclick="showPage('archive')">Archive</button>
+    <button class="nav-link" onclick="showPage('exhibition')">Exhibition</button>
+    <button class="nav-donate" onclick="showPage('donate')">Support Us</button>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════════ HOME PAGE -->
+<div id="page-home" class="page active">
+
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-eyebrow">Jaipur's First Geo-Mapped Craft Preservation Platform</div>
+      <h1 class="hero-headline">Art lives on<br>when <em>artists</em><br>are seen</h1>
+      <p class="hero-body">In the narrow galis of Jaipur, centuries of mastery live in hands that the modern economy cannot see, measure, or price. Karigar exists to change that — translating ancient knowledge into a language that markets and institutions finally recognise.</p>
+      <div class="hero-cta-group">
+        <button class="btn-primary" onclick="showPage('map')">Explore the Map</button>
+        <button class="btn-secondary" onclick="showPage('exhibition')">View Exhibition</button>
+      </div>
+      <div class="hero-scroll">Scroll to discover</div>
+    </div>
+    <div class="hero-right">
+      <div style="margin-bottom:1rem;padding-bottom:1.5rem;border-bottom:1px solid var(--crimson-border);">
+        <div class="section-eyebrow">The scale of what we're preserving</div>
+      </div>
+      <div class="hero-stat"><div class="hero-stat-num">9</div><div class="hero-stat-label">Craft clusters mapped across Jaipur</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">36</div><div class="hero-stat-label">Interpretive paintings in the exhibition</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">3</div><div class="hero-stat-label">Risk classifications — Stable, Vulnerable, Critical</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">2</div><div class="hero-stat-label">Critical-risk crafts with fewer than 10 living masters</div></div>
+      <div style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--crimson-border);">
+        <span class="risk-badge risk-critical">Critical</span>&nbsp;
+        <span class="risk-badge risk-vulnerable">Vulnerable</span>&nbsp;
+        <span class="risk-badge risk-stable">Stable</span>
+        <p style="font-size:0.8rem;color:var(--ink-soft);margin-top:0.75rem;line-height:1.6;">Risk classifications based on Karigar's field research across active cluster sites.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="intro-section">
+    <div class="container">
+      <div class="intro-grid">
+        <div>
+          <div class="intro-quote">"The mastery was still there — but the systems around it no longer saw or valued it in the same way."</div>
+        </div>
+        <div class="intro-text">
+          <div class="section-eyebrow">Why Karigar exists</div>
+          <p>Walk into a narrow gali in Sanganer and you'll hear the rhythmic thump-thump of a wooden block meeting fabric — that sound is centuries of muscle memory held in a single hand. In a quiet courtyard, a master of Blue Pottery leans over his chak, instinctively knowing the exact moment the glazed bartan is ready for the kiln's fire.</p>
+          <p>These moments of silent knowledge are what the modern economy misses. Jaipur's craftsmen are not disappearing because the skill is gone. They're disappearing because no system exists to make the skill visible, value it fairly, or ensure the next generation has a reason to learn it.</p>
+          <p>Karigar is building that system — through geo-tagged maps, intimate video archives, and interpretive paintings that show the labour behind the craft, not just the finished object.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="gallery-section">
+    <div class="container">
+      <div class="gallery-label">
+        <div class="section-eyebrow">From the exhibition</div>
+        <div class="section-title">Thirty-six paintings.<br>Nine craft traditions.<br>Centuries of <em>mastery</em>.</div>
+      </div>
+      <div class="gallery-strip">
+        <div class="gallery-card" onclick="showPage('exhibition')">
+          <div class="gallery-card-art craft-bg-bluepottery">
+            <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="40" cy="50" rx="25" ry="20" fill="none" stroke="#1a5c8a" stroke-width="1.5"/>
+              <ellipse cx="40" cy="38" rx="15" ry="12" fill="none" stroke="#1a5c8a" stroke-width="1.5"/>
+              <circle cx="40" cy="32" r="6" fill="none" stroke="#1a5c8a" stroke-width="1.5"/>
+              <path d="M28 45 Q40 35 52 45" stroke="#2a8ac8" stroke-width="1" fill="none"/>
+              <circle cx="32" cy="52" r="3" fill="#1a5c8a" opacity="0.4"/>
+              <circle cx="48" cy="55" r="2" fill="#2a8ac8" opacity="0.4"/>
+              <circle cx="40" cy="58" r="4" fill="#1a5c8a" opacity="0.3"/>
+            </svg>
+          </div>
+          <div class="gallery-overlay">
+            <div class="gallery-overlay-title">The Wheel's Memory</div>
+            <div class="gallery-overlay-sub">Blue Pottery · Critical Risk</div>
+          </div>
+        </div>
+        <div class="gallery-card" onclick="showPage('exhibition')">
+          <div class="gallery-card-art craft-bg-blockprint">
+            <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="20" y="20" width="40" height="40" fill="none" stroke="#8a5a1a" stroke-width="1.5"/>
+              <circle cx="40" cy="40" r="8" fill="none" stroke="#8a5a1a" stroke-width="1"/>
+              <path d="M20 30 H60 M20 40 H60 M20 50 H60" stroke="#8a5a1a" stroke-width="0.5" opacity="0.3"/>
+              <circle cx="30" cy="30" r="3" fill="#8a5a1a" opacity="0.5"/>
+              <circle cx="50" cy="30" r="3" fill="#8a5a1a" opacity="0.5"/>
+              <circle cx="30" cy="50" r="3" fill="#8a5a1a" opacity="0.5"/>
+              <circle cx="50" cy="50" r="3" fill="#8a5a1a" opacity="0.5"/>
+            </svg>
+          </div>
+          <div class="gallery-overlay">
+            <div class="gallery-overlay-title">Sanganer at Dawn</div>
+            <div class="gallery-overlay-sub">Block Printing · Vulnerable</div>
+          </div>
+        </div>
+        <div class="gallery-card" onclick="showPage('exhibition')">
+          <div class="gallery-card-art craft-bg-miniature">
+            <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="18" y="15" width="44" height="52" rx="2" fill="none" stroke="#5a4520" stroke-width="1.5"/>
+              <rect x="22" y="19" width="36" height="30" rx="1" fill="none" stroke="#5a4520" stroke-width="0.5" opacity="0.5"/>
+              <circle cx="40" cy="34" r="10" fill="none" stroke="#8a6a30" stroke-width="1"/>
+              <path d="M34 34 Q40 26 46 34 Q40 42 34 34Z" fill="none" stroke="#8a6a30" stroke-width="0.75"/>
+              <line x1="22" y1="54" x2="58" y2="54" stroke="#5a4520" stroke-width="0.5"/>
+              <line x1="22" y1="58" x2="50" y2="58" stroke="#5a4520" stroke-width="0.5"/>
+            </svg>
+          </div>
+          <div class="gallery-overlay">
+            <div class="gallery-overlay-title">Single Hair, Whole World</div>
+            <div class="gallery-overlay-sub">Miniature Painting · Critical Risk</div>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:2.5rem;">
+        <button class="btn-secondary" onclick="showPage('exhibition')">View All 36 Paintings</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="mission-section">
+    <div class="mission-inner">
+      <div class="mission-eyebrow">Our mission</div>
+      <p class="mission-text">Karigar's mission is to make artisanal mastery <em>visible, valued, and economically sustainable</em> — bridging the gap between tacit, experience-based knowledge and the systems that rely on visibility, structure, and measurable value.</p>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-grid">
+        <div>
+          <div class="section-eyebrow">Get in touch</div>
+          <h2 class="section-title">Have a question<br>or <em>an idea?</em></h2>
+          <p style="font-size:1.05rem;line-height:1.8;color:var(--ink-mid);margin-top:1rem;font-weight:300;">Whether you're a cultural institution, an art collector, a researcher, or simply someone who believes this work matters — we'd like to hear from you.</p>
+          <div style="margin-top:2rem;padding:1.5rem;background:var(--cream-dark);border-left:2px solid var(--crimson);">
+            <div class="section-eyebrow" style="margin-bottom:0.25rem;">For partnership inquiries</div>
+            <p style="font-size:0.95rem;color:var(--ink-mid);">karigar.jaipur@gmail.com</p>
+          </div>
+        </div>
+        <div class="cta-form">
+          <div class="form-group">
+            <label class="form-label">Name</label>
+            <input class="form-input" type="text" placeholder="Your name">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input class="form-input" type="email" placeholder="your@email.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Message</label>
+            <textarea class="form-textarea" rows="5" placeholder="Tell us about your interest or inquiry…"></textarea>
+          </div>
+          <button class="btn-primary" style="align-self:flex-start">Send Message</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">Karigar</div>
+          <div class="footer-tagline">Art lives on when artists are seen</div>
+          <p class="footer-body">Jaipur's first geo-mapped craft preservation platform. A non-profit initiative documenting, showcasing, and sustaining the mastery of Jaipur's traditional artisans before it is lost.</p>
+        </div>
+        <div>
+          <div class="footer-heading">Navigate</div>
+          <ul class="footer-links">
+            <li onclick="showPage('home')">Home</li>
+            <li onclick="showPage('about')">About Us</li>
+            <li onclick="showPage('map')">Craft Map</li>
+            <li onclick="showPage('archive')">Artist Archive</li>
+            <li onclick="showPage('exhibition')">Exhibition</li>
+            <li onclick="showPage('donate')">Support</li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-heading">Find Us</div>
+          <ul class="footer-links">
+            <li>Instagram</li>
+            <li>Jaipur, Rajasthan</li>
+            <li>karigar.jaipur@gmail.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2025 Karigar. Non-profit initiative.</span>
+        <span>Jaipur's craft heritage, documented.</span>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- ════════════════════════════════════════ ABOUT PAGE -->
+<div id="page-about" class="page">
+  <section class="about-hero">
+    <div class="container">
+      <div class="about-hero-grid">
+        <div>
+          <div class="section-eyebrow">Our story</div>
+          <h1 class="section-title">Born from the <em>pink-hued streets</em> of Jaipur</h1>
+        </div>
+        <div class="body-text">Karigar was born from the shared observations of three students raised in Jaipur. Growing up surrounded by the city's craftsmanship, art was never separate from daily life — it existed in the streets, the homes, and the rhythm of the city itself. But over time, that rhythm began to change.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="story-section">
+    <div class="container">
+      <div class="intro-grid">
+        <div>
+          <div class="section-eyebrow">The realisation</div>
+          <h2 class="section-title">Not a loss of skill.<br>A loss of <em>recognition</em>.</h2>
+        </div>
+        <div>
+          <p class="body-text">What we began to notice was not a loss of skill, but a loss of recognition. The mastery was still there — but the systems around it no longer saw or valued it in the same way.</p>
+          <p class="body-text" style="margin-top:1rem;">Karigar emerged from this realisation: an effort to ensure that the soul of Jaipur's craftsmanship does not remain hidden or fade with time, but continues to exist as something visible, valued, and relevant in the modern world.</p>
+          <p class="body-text" style="margin-top:1rem;">This is not a cultural problem. It is a structural market failure — where rare human skill exists, but cannot be seen, valued, or sustained within the systems that define economic worth.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="founders-section">
+    <div class="container">
+      <div class="section-eyebrow">The voices behind Karigar</div>
+      <h2 class="section-title">Three perspectives.<br>One <em>shared</em> urgency.</h2>
+      <div class="founder-grid">
+        <div class="founder-card">
+          <div class="founder-name">Samarveer Singh Shekhawat</div>
+          <div class="founder-role">Co-Founder</div>
+          <p class="founder-bio">Great-grandson of Padma Shri Shilp Guru Kripal Singhji Shekhawat — the father of Jaipur Blue Pottery. Always surrounded by the craft through the spaces, the process, and the legacy it carried. He noticed a persistent disconnect: while the final pieces were appreciated, the depth of skill and decades of mastery behind them remained largely unseen.</p>
+        </div>
+        <div class="founder-card">
+          <div class="founder-name">Trishiv Ohlan</div>
+          <div class="founder-role">Co-Founder</div>
+          <p class="founder-bio">Observed how people engage with art at a surface level — focused on appearance rather than the effort, time, and precision behind the work. This gap between what is seen and what actually goes into creating it made him question how value is assigned, and why deeply skilled work is so easily overlooked. Karigar, for him, is about bridging that gap.</p>
+        </div>
+        <div class="founder-card">
+          <div class="founder-name">Anika Singh</div>
+          <div class="founder-role">Co-Founder</div>
+          <p class="founder-bio">Motivated by understanding the uncertainty surrounding these crafts. While the work carries immense cultural and creative value, it does not always translate into stability for the artisans themselves. Seeing this imbalance made it clear that appreciation alone is not enough — there must be systems that support artisans in a real, sustainable way.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ecosystem-section">
+    <div class="container">
+      <div class="section-eyebrow">How we work</div>
+      <h2 class="section-title">The Karigar <em>ecosystem</em></h2>
+      <div class="eco-grid">
+        <div class="eco-card">
+          <div class="eco-card-num">01</div>
+          <div class="eco-card-title">The Digital Hub</div>
+          <p class="eco-card-body">The Karigar website serves as a first-of-its-kind Cultural Heat Map. We have digitally mapped nine traditional crafts across Jaipur, highlighting their specific clusters and current risk levels.</p>
+          <ul class="eco-list">
+            <li>Artisan Registry — a curated directory of master practitioners</li>
+            <li>Teaching Archive — video interviews preserving at-risk knowledge</li>
+            <li>Context Capsules — history, origin, and cultural weight of each art form</li>
+            <li>Heat Map — spatial risk intelligence across Jaipur's craft clusters</li>
+          </ul>
+        </div>
+        <div class="eco-card">
+          <div class="eco-card-num">02</div>
+          <div class="eco-card-title">The Physical Exhibition</div>
+          <p class="eco-card-body">The heart of our project is a collection of 36 Interpretive Paintings. These pieces don't just show the final product — they visualise the labour, the fragility, and the complexity of the artisanal process.</p>
+          <ul class="eco-list">
+            <li>36 paintings across all nine craft traditions</li>
+            <li>QR codes linking each painting to the artisan's story</li>
+            <li>Non-profit — proceeds support featured artisans directly</li>
+            <li>Designed to travel — each venue is a new audience</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="problem-section">
+    <div class="container">
+      <div class="intro-grid">
+        <div>
+          <div class="section-eyebrow">The problem we're solving</div>
+          <h2 class="section-title">A structural<br>market <em>failure</em>.</h2>
+          <div style="margin-top:2rem;padding:1.5rem;background:var(--cream);border-left:2px solid var(--crimson);">
+            <p style="font-family:'Playfair Display',serif;font-size:1.1rem;font-style:italic;color:var(--crimson);line-height:1.6;">"Jaipur's artisans are not disappearing due to a lack of skill, but due to a lack of recognition within modern economic systems."</p>
+          </div>
+        </div>
+        <div>
+          <p class="body-text">Modern economies are designed to value speed, volume, and repeatability. Traditional crafts require time, precision, and deep tacit knowledge — forms of expertise that exist in practice rather than documentation. As a result, work that is rare and complex is often undervalued.</p>
+          <p class="body-text" style="margin-top:1rem;">Buyers are unable to accurately judge the effort, skill, or rarity behind a product, allowing intermediaries to dominate pricing. Artisans become price-takers, earning disproportionately less than the worth of their work.</p>
+          <p class="body-text" style="margin-top:1rem;">As many crafts now have only a few master practitioners left, the risk of extinction is immediate rather than gradual. Since most of this knowledge is not formally documented and is passed down through practice, its loss is often permanent once these artisans are gone.</p>
+          <div style="margin-top:2rem;display:flex;gap:1.5rem;">
+            <button class="btn-primary" onclick="showPage('map')">Explore the Map</button>
+            <button class="btn-secondary" onclick="showPage('donate')">Support the Work</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-bottom" style="border-top:none;padding-top:0;">
+        <span>© 2025 Karigar. Non-profit initiative.</span>
+        <span>Jaipur, Rajasthan</span>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- ════════════════════════════════════════ MAP PAGE -->
+<div id="page-map" class="page">
+  <div class="map-page-layout">
+    <div class="map-sidebar">
+      <div class="map-sidebar-header">
+        <div class="map-sidebar-title">Craft Cluster Map</div>
+        <p style="font-size:0.85rem;color:var(--ink-soft);line-height:1.6;">Nine traditional crafts mapped across Jaipur. Select a cluster to see full details.</p>
+      </div>
+      <div class="map-controls">
+        <div class="map-toggle" onclick="toggleHeat()">
+          <div class="toggle-switch" id="heat-toggle"><div class="toggle-knob"></div></div>
+          <span>Heat Map Intensity</span>
+        </div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#4a0c07"></div>Critical risk — fewer than 10 masters</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#7a4c1a"></div>Vulnerable — declining practitioners</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#1a3d1a"></div>Stable — active community</div>
+        </div>
+      </div>
+      <div id="detail-panel" class="detail-panel">
+        <div class="detail-panel-title" id="dp-name"></div>
+        <div class="detail-master" id="dp-master"></div>
+        <p class="detail-desc" id="dp-desc"></p>
+        <div class="detail-grid" id="dp-grid"></div>
+        <div class="detail-actions">
+          <button class="detail-btn primary" onclick="showPage('archive')">View Archive</button>
+          <button class="detail-btn" onclick="showPage('exhibition')">See Paintings</button>
+        </div>
+      </div>
+      <div class="cluster-list" id="cluster-list"></div>
+    </div>
+    <div class="map-canvas">
+      <div class="map-svg-wrap">
+        <svg id="jaipur-map" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+          <!-- Map background -->
+          <rect width="800" height="600" fill="#f5e4c0"/>
+          <!-- Heat overlay circles (shown when toggle on) -->
+          <g id="heat-overlays">
+            <circle cx="224" cy="132" r="60" fill="rgba(100,19,11,0.12)" class="heat-overlay" id="heat-blue-pottery"/>
+            <circle cx="360" cy="492" r="70" fill="rgba(180,100,20,0.10)" class="heat-overlay" id="heat-block-printing"/>
+            <circle cx="520" cy="210" r="55" fill="rgba(100,19,11,0.14)" class="heat-overlay" id="heat-miniature"/>
+            <circle cx="416" cy="240" r="50" fill="rgba(140,80,160,0.08)" class="heat-overlay" id="heat-leheriya"/>
+            <circle cx="480" cy="288" r="45" fill="rgba(180,80,80,0.10)" class="heat-overlay" id="heat-lac"/>
+            <circle cx="440" cy="312" r="50" fill="rgba(50,130,80,0.08)" class="heat-overlay" id="heat-meenakari"/>
+            <circle cx="240" cy="108" r="55" fill="rgba(140,120,80,0.10)" class="heat-overlay" id="heat-stone"/>
+            <circle cx="576" cy="330" r="60" fill="rgba(160,130,40,0.08)" class="heat-overlay" id="heat-carpet"/>
+            <circle cx="496" cy="264" r="45" fill="rgba(180,140,20,0.10)" class="heat-overlay" id="heat-kundan"/>
+          </g>
+          <!-- City boundary (stylised) -->
+          <path d="M120,80 L400,50 L680,90 L720,300 L680,520 L400,560 L120,520 L80,300 Z" fill="none" stroke="rgba(100,19,11,0.15)" stroke-width="1.5" stroke-dasharray="8,4"/>
+          <!-- Road network (simplified) -->
+          <g stroke="rgba(100,19,11,0.12)" stroke-width="1" fill="none">
+            <line x1="80" y1="300" x2="720" y2="300"/>
+            <line x1="400" y1="50" x2="400" y2="560"/>
+            <line x1="200" y1="80" x2="600" y2="520"/>
+            <line x1="600" y1="80" x2="200" y2="520"/>
+          </g>
+          <!-- Walled City boundary -->
+          <rect x="310" y="190" width="220" height="200" rx="6" fill="rgba(100,19,11,0.04)" stroke="rgba(100,19,11,0.2)" stroke-width="1.5"/>
+          <text x="420" y="183" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="10" fill="rgba(100,19,11,0.5)" letter-spacing="2">WALLED CITY</text>
+          <!-- Amer Fort area -->
+          <rect x="140" y="60" width="120" height="80" rx="4" fill="rgba(100,19,11,0.05)" stroke="rgba(100,19,11,0.15)" stroke-width="1"/>
+          <text x="200" y="95" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="9" fill="rgba(100,19,11,0.45)">Amer / North</text>
+          <!-- Sanganer area -->
+          <ellipse cx="360" cy="490" rx="70" ry="45" fill="rgba(100,19,11,0.03)" stroke="rgba(100,19,11,0.15)" stroke-width="1"/>
+          <text x="360" y="494" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="9" fill="rgba(100,19,11,0.45)">Sanganer</text>
+          <!-- Ramganj area -->
+          <ellipse cx="576" cy="340" rx="60" ry="40" fill="rgba(100,19,11,0.03)" stroke="rgba(100,19,11,0.15)" stroke-width="1"/>
+          <text x="576" y="344" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="9" fill="rgba(100,19,11,0.45)">Ramganj</text>
+
+          <!-- Craft pins - rendered by JS -->
+          <g id="craft-pins"></g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ ARCHIVE PAGE -->
+<div id="page-archive" class="page">
+  <section class="archive-hero">
+    <div class="container">
+      <div class="section-eyebrow">Documentation</div>
+      <h1 class="section-title">The Artists' <em>Archive</em></h1>
+      <p class="body-text" style="max-width:600px;margin-top:1rem;">A digital repository of Karigar's primary research and field recordings. Video interviews, process demonstrations, and teaching sessions — preserving the how-to of the masters before it is lost.</p>
+    </div>
+  </section>
+  <div class="container" style="padding-top:2rem;padding-bottom:5rem;">
+    <div class="archive-tabs">
+      <button class="archive-tab active" onclick="switchTab('video',this)">Video Archive</button>
+      <button class="archive-tab" onclick="switchTab('docs',this)">Artist Documents</button>
+    </div>
+    <div id="tab-video" class="archive-tab-content active">
+      <div class="video-grid" id="video-grid"></div>
+    </div>
+    <div id="tab-docs" class="archive-tab-content">
+      <div class="doc-grid" id="doc-grid"></div>
+    </div>
+  </div>
+  <footer><div class="container"><div class="footer-bottom" style="border-top:none;padding-top:0;"><span>© 2025 Karigar.</span></div></div></footer>
+</div>
+
+<!-- ════════════════════════════════════════ EXHIBITION PAGE -->
+<div id="page-exhibition" class="page">
+  <section class="exhibition-hero">
+    <div class="container">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
+        <div>
+          <div class="section-eyebrow">The Exhibition</div>
+          <h1 class="section-title">36 paintings.<br>Nine craft <em>traditions</em>.<br>One living archive.</h1>
+        </div>
+        <div style="max-width:360px;">
+          <p class="body-text">Each painting visualises the labour and complexity of the artisanal process — not just the finished object. Scan the QR code on any piece to meet the artisan, see their cluster on the map, and read the history of their craft.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="exhibition-grid" id="exhibition-grid"></div>
+  <div style="padding:3rem 0;text-align:center;border-top:1px solid var(--crimson-border);">
+    <p class="body-text" style="margin-bottom:1.5rem;">Interested in acquiring a painting or hosting the exhibition?</p>
+    <button class="btn-primary" onclick="showPage('donate')">Get in Touch</button>
+  </div>
+  <footer><div class="container"><div class="footer-bottom" style="border-top:none;padding-top:0;"><span>© 2025 Karigar. All proceeds support featured artisans.</span></div></div></footer>
+</div>
+
+<!-- Painting Modal -->
+<div class="modal-overlay" id="painting-modal" onclick="closeModal(event)">
+  <div class="modal-box" id="modal-box">
+    <div class="modal-header">
+      <button class="modal-close" onclick="document.getElementById('painting-modal').classList.remove('open')">✕ Close</button>
+      <div id="modal-art" class="modal-art"></div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-eyebrow" id="modal-craft"></div>
+      <div class="modal-title" id="modal-title"></div>
+      <div class="modal-section"><div class="modal-section-label">About the art form</div><div class="modal-section-text" id="modal-about"></div></div>
+      <div class="modal-section"><div class="modal-section-label">History</div><div class="modal-section-text" id="modal-history"></div></div>
+      <div class="modal-section"><div class="modal-section-label">The challenge</div><div class="modal-section-text" id="modal-challenge"></div></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--crimson-border);">
+        <div id="modal-badge"></div>
+        <div style="text-align:right;">
+          <div style="font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:4px;">Scan to meet the artisan</div>
+          <div style="display:grid;grid-template-columns:repeat(4,8px);gap:2px;float:right;">
+            <div style="background:var(--crimson);height:8px;"></div><div style="background:var(--crimson);height:8px;"></div><div style="background:var(--cream-dark);height:8px;"></div><div style="background:var(--crimson);height:8px;"></div>
+            <div style="background:var(--cream-dark);height:8px;"></div><div style="background:var(--crimson);height:8px;"></div><div style="background:var(--cream-dark);height:8px;"></div><div style="background:var(--cream-dark);height:8px;"></div>
+            <div style="background:var(--crimson);height:8px;"></div><div style="background:var(--cream-dark);height:8px;"></div><div style="background:var(--crimson);height:8px;"></div><div style="background:var(--crimson);height:8px;"></div>
+            <div style="background:var(--crimson);height:8px;"></div><div style="background:var(--crimson);height:8px;"></div><div style="background:var(--cream-dark);height:8px;"></div><div style="background:var(--crimson);height:8px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ DONATE PAGE -->
+<div id="page-donate" class="page">
+  <section class="donation-hero">
+    <div class="container">
+      <div class="section-eyebrow">Support Us</div>
+      <h1 class="section-title">Help keep mastery <em>alive</em>.</h1>
+      <p class="body-text" style="max-width:600px;margin-top:1rem;">Karigar is a non-profit, craft-focused initiative. All proceeds from painting sales and voluntary donations are used to ensure the sustainability of Jaipur's artisanal heritage.</p>
+    </div>
+  </section>
+
+  <div class="container">
+    <section style="padding:4rem 0;border-bottom:1px solid var(--crimson-border);">
+      <div class="section-eyebrow">How your contribution helps</div>
+      <div class="impact-cards" style="margin-top:1.5rem;">
+        <div class="impact-card">
+          <div class="impact-num">20–30</div>
+          <div class="impact-label">Master artisans receiving direct financial aid and raw material support</div>
+        </div>
+        <div class="impact-card">
+          <div class="impact-num">9</div>
+          <div class="impact-label">Craft clusters digitally mapped with ongoing field documentation</div>
+        </div>
+        <div class="impact-card">
+          <div class="impact-num">∞</div>
+          <div class="impact-label">Teaching archive maintained permanently — knowledge that outlasts the master</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:1.5rem;">
+        <div style="background:var(--cream-dark);padding:1.5rem;border-left:2px solid var(--crimson);">
+          <div class="section-eyebrow" style="margin-bottom:0.5rem;">Direct artisan support</div>
+          <p style="font-size:0.95rem;color:var(--ink-mid);line-height:1.7;">Financial aid and raw materials to featured master artisans, ensuring their practice can continue regardless of market conditions.</p>
+        </div>
+        <div style="background:var(--cream-dark);padding:1.5rem;border-left:2px solid var(--crimson);">
+          <div class="section-eyebrow" style="margin-bottom:0.5rem;">Skill transmission</div>
+          <p style="font-size:0.95rem;color:var(--ink-mid);line-height:1.7;">Funding workshops and apprenticeships for younger generations in at-risk crafts — particularly Miniature Painting and Blue Pottery.</p>
+        </div>
+        <div style="background:var(--cream-dark);padding:1.5rem;border-left:2px solid var(--crimson);">
+          <div class="section-eyebrow" style="margin-bottom:0.5rem;">Digital preservation</div>
+          <p style="font-size:0.95rem;color:var(--ink-mid);line-height:1.7;">Maintaining the geo-tagged map and expanding the video archive to document more endangered clusters before their masters are gone.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="donation-grid">
+      <div>
+        <div class="section-eyebrow">Bank transfer</div>
+        <h2 class="section-title" style="font-size:1.8rem;margin-bottom:1.5rem;">Donation<br><em>details</em></h2>
+        <div class="bank-details">
+          <div class="bank-row"><span class="bank-key">Account name</span><span class="bank-val">[Organisation Name]</span></div>
+          <div class="bank-row"><span class="bank-key">Bank name</span><span class="bank-val">[Bank Name]</span></div>
+          <div class="bank-row"><span class="bank-key">Account number</span><span class="bank-val">[Account Number]</span></div>
+          <div class="bank-row"><span class="bank-key">IFSC code</span><span class="bank-val">[IFSC Code]</span></div>
+          <div class="bank-row"><span class="bank-key">UPI ID</span><span class="bank-val">[UPI ID]</span></div>
+        </div>
+        <div style="margin-top:1.5rem;padding:1.25rem;background:var(--cream-dark);border:1px solid var(--crimson-border);">
+          <div class="section-eyebrow" style="margin-bottom:0.5rem;">For painting acquisitions</div>
+          <p style="font-size:0.95rem;color:var(--ink-mid);line-height:1.6;">To acquire a painting from the exhibition, please reach out directly. Each sale funds the artisan directly and helps sustain the teaching archive.</p>
+          <p style="font-size:0.95rem;color:var(--crimson);margin-top:0.5rem;">karigar.jaipur@gmail.com</p>
+        </div>
+      </div>
+      <div>
+        <div class="section-eyebrow">Write to us</div>
+        <h2 class="section-title" style="font-size:1.8rem;margin-bottom:1.5rem;">Partner with<br><em>Karigar</em></h2>
+        <p class="body-text" style="margin-bottom:1.5rem;">For institutions exploring partnership, exhibition hosting, or research collaboration, we'd like to hear from you.</p>
+        <div class="cta-form">
+          <div class="form-group"><label class="form-label">Name / Organisation</label><input class="form-input" type="text" placeholder="Your name or organisation"></div>
+          <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="your@email.com"></div>
+          <div class="form-group"><label class="form-label">Nature of enquiry</label>
+            <select class="form-input" style="cursor:pointer;">
+              <option>General donation</option>
+              <option>Painting acquisition</option>
+              <option>Institutional partnership</option>
+              <option>Exhibition hosting</option>
+              <option>Research collaboration</option>
+            </select>
+          </div>
+          <div class="form-group"><label class="form-label">Message</label><textarea class="form-textarea" rows="4" placeholder="Tell us about your interest…"></textarea></div>
+          <button class="btn-primary" style="align-self:flex-start">Send Enquiry</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="donation-faq" style="background:var(--cream-dark);">
+    <div class="container">
+      <div class="section-eyebrow">Questions</div>
+      <h2 class="section-title" style="font-size:1.8rem;margin-bottom:2rem;">Common <em>enquiries</em></h2>
+      <div id="faq-list"></div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="footer-bottom" style="border-top:none;padding-top:0;">
+        <span>© 2025 Karigar. Non-profit initiative.</span>
+        <span>All proceeds support featured artisans.</span>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script>
+// ── DATA ─────────────────────────────────────────────────────────────────────
+const crafts = [
+  {id:'blue-pottery',name:'Blue Pottery',master:'Gopal Saini',lineage:'3rd generation',risk:'critical',
+   px:224,py:132,area:'Amer Road, North Jaipur',
+   specialization:'Hand-painted glazed earthenware using quartz stone powder',
+   materials:'Quartz, glass, Multani mitti, sodium sulphate, borax',
+   complexity:'12-step kiln process',waitTime:'3–4 weeks per piece',
+   priceRange:'₹₹₹',payment:'UPI · Cash · Card',shipping:'Domestic & International',languages:'Hindi, Rajasthani',
+   description:"One of Jaipur's oldest craft traditions. Blue Pottery uses a unique non-clay body and distinctive cobalt blue glazes. Only a handful of master practitioners remain — several in their 80s.",
+   about:'Blue Pottery gets its name from the striking cobalt blue used to decorate it. Unlike conventional pottery, it uses no clay — the body is made from quartz stone powder, ground glass, and natural binders.',
+   history:"Brought to Jaipur from Persia via Mughal courts. Maharaja Ram Singh II revived it in the 19th century. Padma Shri Kripal Singhji Shekhawat — Samarveer's great-grandfather — led its modern revival.",
+   challenge:"Fewer than 12 master potters can execute the full 12-step process. The knowledge lives in hands, not books — and once those hands are gone, it cannot be reconstructed.",
+   bgClass:'craft-bg-bluepottery'},
+  {id:'block-printing',name:'Sanganer Block Printing',master:'Ramesh Kumar Chippa',lineage:'5th generation',risk:'vulnerable',
+   px:360,py:492,area:'Sanganer, South Jaipur',
+   specialization:'Natural dye hand block printing on cotton and silk',
+   materials:'Teak wood blocks, natural dyes, cotton/silk fabric',
+   complexity:'Up to 15 steps per design',waitTime:'1–2 weeks per yard',
+   priceRange:'₹₹',payment:'UPI · Cash',shipping:'Domestic & International',languages:'Hindi, Rajasthani',
+   description:"The rhythmic thump-thump of teak wood blocks meeting fabric — that sound is centuries of muscle memory. Each pattern requires precise alignment of multiple handcarved blocks and weeks of natural dye processing.",
+   about:'Sanganer printing uses hand-carved teak blocks and natural dyes derived from minerals and plants. Each design requires multiple blocks — one per colour — aligned by feel and experience.',
+   history:'Sanganer became Jaipur\'s printing hub under Maharaja Sawai Jai Singh II. The town\'s artisan families have maintained continuous craft lineages for over 300 years.',
+   challenge:'Synthetic dyes and machine printing undercut natural hand-printing on price. The younger generation increasingly moves to cities, breaking the lineage that once transferred knowledge automatically.',
+   bgClass:'craft-bg-blockprint'},
+  {id:'miniature',name:'Miniature Painting',master:'Shyam Sharma',lineage:'4th generation',risk:'critical',
+   px:520,py:210,area:'Tripolia Bazar, Old City',
+   specialization:'Fine detail painting using single-hair brushes on paper and cloth',
+   materials:'Natural pigments, single-hair squirrel brushes, handmade paper',
+   complexity:'Weeks to months per piece',waitTime:'2–6 months per major composition',
+   priceRange:'₹₹₹',payment:'UPI · Cash · Card',shipping:'Domestic & International',languages:'Hindi',
+   description:"A level of concentration that transforms blank surface into a window to another era. The masters who can paint at true miniature scale — with brushes made from a single hair — number fewer than ten in Jaipur.",
+   about:'Miniature painting demands concentration at a scale most hands cannot hold. A single composition may take months. Brushes are often made from a single squirrel or cat hair bound with thread.',
+   history:'The Mughal and Rajput courts patronised miniature painting from the 16th century. Jaipur\'s Kishangarh school developed the distinctive elongated eye form that defines Rajasthani miniatures.',
+   challenge:'The knowledge is held by a vanishing few. Apprenticeship requires years before a student can attempt a significant piece — and very few young people are willing to invest that time at current market rates.',
+   bgClass:'craft-bg-miniature'},
+  {id:'leheriya',name:'Leheriya & Bandhej',master:'Naseem Khan',lineage:'3rd generation',risk:'stable',
+   px:416,py:240,area:'Old City, Central Jaipur',
+   specialization:'Traditional Rajasthani resist-dyeing — wave patterns and tie-dye',
+   materials:'Muslin, georgette, natural dyes, thread',
+   complexity:'5–8 step dyeing process',waitTime:'3–5 days per saree',
+   priceRange:'₹₹',payment:'UPI · Cash',shipping:'Domestic',languages:'Hindi, Rajasthani',
+   description:"The diagonal wave patterns of Leheriya have dressed Rajasthani women for centuries. Each binding is tied by hand — the patterns are not drawn, they are known in the fingers.",
+   about:"Leheriya means 'waves' in Rajasthani. Fabric is rolled diagonally and bound at intervals before dyeing, creating wave patterns. Bandhej (tie-dye) creates dot patterns through selective binding.",
+   history:'Traditionally associated with festivals and weddings in Rajasthan. The specific tying methods are family secrets — passed from mother to daughter, generation to generation, with no written record.',
+   challenge:'Machine-printed Leheriya imitations flood the market at a fraction of the price. Without visible labelling of authentic pieces, buyers cannot distinguish hand-made from printed.',
+   bgClass:'craft-bg-leheriya'},
+  {id:'lac-jewelry',name:'Lac Jewellery',master:'Mohan Lal Manihaar',lineage:'6th generation',risk:'vulnerable',
+   px:480,py:288,area:'Johari Bazar, Old City',
+   specialization:'Bangles and jewellery crafted from natural lac resin with mirror inlay',
+   materials:'Lac resin, glass mirrors, natural dyes, gold/silver foil',
+   complexity:'8-step hand-turning process',waitTime:'1–3 days per set',
+   priceRange:'₹',payment:'UPI · Cash',shipping:'Domestic',languages:'Hindi, Rajasthani',
+   description:"Lac jewellery is one of the oldest living crafts of Rajasthan. The master's hands work at a temperature only experience can calibrate — the lac is shaped directly on a heated spindle.",
+   about:'Lac is a natural resin secreted by the lac insect. Artisans heat it, shape it by hand on a wooden spindle, and inlay it with mirrors and stones. The temperature window for shaping is narrow and can only be felt, not measured.',
+   history:'Lac bangles have been part of Rajasthani bridal wear for over a thousand years. The Manihaar community has specialised in lac work for generations, with studios clustered around Johari Bazar.',
+   challenge:'Plastic and acrylic imitations sell at a fraction of the price of genuine lac. The health hazard of lac dust and the physical demands of working near heat deter younger artisans.',
+   bgClass:'craft-bg-lac'},
+  {id:'meenakari',name:'Meenakari',master:'Suresh Kumar Soni',lineage:'4th generation',risk:'stable',
+   px:440,py:312,area:'Old City, Jaipur',
+   specialization:'Enamel work on gold and silver using finely ground mineral pigments',
+   materials:'Gold/silver base, mineral enamel powders, fine engraving tools',
+   complexity:'6–10 separate kiln firings per piece',waitTime:'2–4 weeks per piece',
+   priceRange:'₹₹₹',payment:'Card · UPI · Cash',shipping:'Domestic & International',languages:'Hindi, English',
+   description:"Meenakari transforms metal into jewelled painting. Each colour requires a separate firing — and at each firing, the piece risks destruction. The master calibrates temperature, colour chemistry, and timing by instinct alone.",
+   about:"Meenakari (from the Persian 'mina', meaning heaven) is the art of colouring the surface of metals by fusing brilliantly coloured mineral compounds. Each colour has a different melting temperature.",
+   history:'Introduced to Jaipur by Maharaja Man Singh I, who brought craftsmen from Lahore in the 16th century. Jaipur developed a distinctive style using deeper colours on 24-karat gold.',
+   challenge:"The skill requires mastery of chemistry, metalwork, and kiln control — a rare combination. Many meenakars now subcontract colour firing to specialists, fragmenting knowledge that was once held in one pair of hands.",
+   bgClass:'craft-bg-meenakari'},
+  {id:'stone-carving',name:'Stone Carving',master:'Bhagwan Lal Patherawat',lineage:'5th generation',risk:'vulnerable',
+   px:240,py:108,area:'Kishanpol, Near Amer',
+   specialization:'Decorative and architectural carving in Makrana marble and sandstone',
+   materials:'Makrana marble, pink sandstone, hand chisels',
+   complexity:'Freehand carving from memory — no stencils used',waitTime:'1 week to 3 months',
+   priceRange:'₹₹',payment:'Cash · UPI',shipping:'Domestic (fragile)',languages:'Hindi, Rajasthani',
+   description:"The same hands that shaped the lattice screens of Amer Fort. Stone carvers work from memory and muscle — the jali pattern exists in the chisel, not on paper.",
+   about:'Jaipur stone carvers work in Makrana marble (the same stone used in the Taj Mahal) and local pink sandstone. Jali screens — intricate geometric lattice — require freehand work with no guiding marks.',
+   history:'The craft reached its peak under Mughal and Rajput patronage, producing architectural elements for forts, palaces, and temples. Many of the finest surviving pieces in Amer Fort are attributed to families still working today.',
+   challenge:"Construction now uses machine-cut stone. The artisanal carver's skills are increasingly sought only for restoration and luxury commissions — a small and unpredictable market.",
+   bgClass:'craft-bg-stone'},
+  {id:'carpet-weaving',name:'Carpet Weaving',master:'Abdullah Khan',lineage:'4th generation',risk:'stable',
+   px:576,py:330,area:'Ramganj, East Jaipur',
+   specialization:'Hand-knotted Persian-influenced wool and silk carpets',
+   materials:'Hand-spun wool, silk, natural dyes, vertical loom',
+   complexity:'Up to 300 knots per square inch',waitTime:'3–12 months per carpet',
+   priceRange:'₹₹₹',payment:'Card · UPI · Cash',shipping:'Domestic & International',languages:'Hindi, Urdu, English',
+   description:"Jaipur's carpet tradition fuses Persian technique with Rajput geometry. The finest carpets require years of work. A single square foot can hold 90,000 hand-tied knots.",
+   about:'Hand-knotted carpets are made by tying individual knots on a vertical loom. Each row requires the weaver to manually tie, cut, and pack every single knot — at 300 per square inch, a medium carpet takes many months.',
+   history:'Brought to Rajasthan by Mughal artisans in the 16th century. Jaipur became a carpet centre under British patronage, with the city\'s looms producing work for European export from the 1880s.',
+   challenge:"Machine-loomed carpets are visually similar to hand-knotted work at a fraction of the price. Without certification systems, buyers frequently pay hand-knotted prices for machine-made goods — collapsing trust in the market.",
+   bgClass:'craft-bg-carpet'},
+  {id:'kundan',name:'Kundan Jewellery',master:'Prakash Chand Sonar',lineage:'7th generation',risk:'stable',
+   px:496,py:264,area:'Johari Bazar, Old City',
+   specialization:'Uncut gemstone setting in 24-karat gold foil using lac base',
+   materials:'24-karat gold foil, uncut gemstones, lac, fine tools',
+   complexity:'10-stage process across multiple specialists',waitTime:'1–3 months per piece',
+   priceRange:'₹₹₹',payment:'Card · UPI',shipping:'International insured only',languages:'Hindi, English',
+   description:"Kundan is the pinnacle of Mughal-Rajput goldsmithing. One necklace passes through the hands of a chiterawala, meenakaar, jadiya, and polisher — each a specialist across generations.",
+   about:'Kundan setting involves embedding uncut gemstones in a framework of 24-karat gold foil, using lac as an adhesive base. The gold is worked at room temperature — no heat is used, so the gem colours are never altered.',
+   history:"India's most ancient goldsmithing technique, with roots in the Mughal courts. Jaipur's Paanch Deori district has been the Kundan capital for over four centuries.",
+   challenge:"A complete Kundan piece requires four or five distinct specialists working in sequence. As each specialty becomes less viable economically, the chain breaks — a necklace that once required only Johari Bazar now requires tracking down specialists across multiple cities.",
+   bgClass:'craft-bg-kundan'}
+];
+
+const videos = [
+  {type:'Interview',title:"The Last of the Blue Wheel",craft:'Blue Pottery',master:'Gopal Saini',duration:'18 min'},
+  {type:'Demonstration',title:"Block by Block: Sanganer at Work",craft:'Block Printing',master:'Ramesh Kumar',duration:'24 min'},
+  {type:'Teaching Session',title:"The Single-Hair Brush: A Miniature Education",craft:'Miniature Painting',master:'Shyam Sharma',duration:'42 min'},
+  {type:'Interview',title:"Tying the Wave: Leheriya in Practice",craft:'Leheriya',master:'Naseem Khan',duration:'15 min'},
+  {type:'Demonstration',title:"Heat and Resin: Lac Jewellery Making",craft:'Lac Jewellery',master:'Mohan Lal',duration:'20 min'},
+  {type:'Teaching Session',title:"Colour Chemistry: The Meenakari Kiln",craft:'Meenakari',master:'Suresh Kumar',duration:'31 min'},
+];
+const docs = [
+  {type:'Artist Profile',icon:'📄',title:'Blue Pottery Master Registry',desc:'Complete profile including lineage, specialisation, studio location, and risk assessment for Jaipur\'s active Blue Pottery masters.'},
+  {type:'Technical Notes',icon:'📋',title:'Natural Dye Recipe Documentation',desc:'Field-recorded natural dye formulations used in Sanganer block printing — mordants, ratios, and seasonal variations.'},
+  {type:'Lineage Map',icon:'🗺',title:'Miniature Painting Family Trees',desc:'Documented skill transmission chains for Jaipur\'s Miniature Painting community, tracing back four generations.'},
+  {type:'Artist Profile',icon:'📄',title:'Meenakari Specialist Directory',desc:'Registry of meenakari artisans including colour specialisation, kiln ownership, and current commission availability.'},
+  {type:'Technical Notes',icon:'📋',title:'Lac Jewellery Tool Taxonomy',desc:'Documentation of specialist tools used in lac work, including spindle types, heating methods, and inlay instruments.'},
+  {type:'Lineage Map',icon:'🗺',title:'Kundan Specialist Chain Map',desc:'Visual map of the specialist chain required to complete a Kundan piece — from chiterawala to final polisher.'},
+];
+const paintingData = [
+  {num:'01',title:"The Wheel's Memory",craft:'Blue Pottery',risk:'critical',about:'Blue Pottery uses no clay — the vessel is built from quartz, glass, and mineral binders, then fired at precise temperatures.',history:'Revived in Jaipur by Maharaja Ram Singh II. The Shekhawat family led its 20th century renaissance.',challenge:'Fewer than 12 master potters can execute the full process. The knowledge lives in hands, not books.',bg:'craft-bg-bluepottery'},
+  {num:'02',title:'Sanganer at Dawn',craft:'Block Printing',risk:'vulnerable',about:'Each design is built from multiple hand-carved teak blocks — one per colour, aligned by touch and experience.',history:'Sanganer has been Jaipur\'s printing centre for over 300 years, with family lineages maintaining continuous craft knowledge.',challenge:'Machine-printed imitations flood the market. Without visible authentication, the artisan cannot command a fair price.',bg:'craft-bg-blockprint'},
+  {num:'03',title:'Single Hair, Whole World',craft:'Miniature Painting',risk:'critical',about:'At true miniature scale, brushes are made from a single squirrel or cat hair. One composition can take months.',history:'The Rajput and Mughal courts patronised miniature painting from the 16th century. Jaipur developed the distinctive Kishangarh style.',challenge:'The masters who can work at this scale number fewer than ten in Jaipur. Apprenticeship requires years.',bg:'craft-bg-miniature'},
+  {num:'04',title:'Wave Memory',craft:'Leheriya & Bandhej',risk:'stable',about:'The diagonal wave pattern of Leheriya is not drawn — it emerges from the folding and binding of the fabric before dyeing.',history:'Traditionally worn during Teej and Gangaur festivals. Each family\'s binding method creates subtly unique patterns.',challenge:'Machine-printed Leheriya imitations sell at a fraction of the price. The authentic piece becomes invisible in a flooded market.',bg:'craft-bg-leheriya'},
+  {num:'05',title:'The Temperature Between',craft:'Lac Jewellery',risk:'vulnerable',about:'Lac resin is shaped by hand on a heated spindle. The temperature window for forming is narrow — known only through decades of practice.',history:'Lac bangles have been part of Rajasthani bridal wear for over a millennium. The Manihaar community has specialised in this work for generations.',challenge:'Plastic imitations and health risks from lac dust are driving younger artisans away from the craft.',bg:'craft-bg-lac'},
+  {num:'06',title:'Fire and Mineral',craft:'Meenakari',risk:'stable',about:'Each colour in a Meenakari piece requires a separate kiln firing at a different temperature. The artisan holds the full chemistry in memory.',history:'Brought to Jaipur from Lahore in the 16th century by Maharaja Man Singh I. The city developed deeper, richer colours than any other centre.',challenge:'The complete process requires mastery of chemistry, metalwork, and kiln control. The knowledge is fragmenting as specialists become isolated.',bg:'craft-bg-meenakari'},
+  {num:'07',title:'Jali: The Open Wall',craft:'Stone Carving',risk:'vulnerable',about:'Jali screens are carved freehand from Makrana marble — no stencils, no guides. The pattern exists in the chisel and the hand.',history:'The same carving tradition produced the screens of Amer Fort. Families active today can trace their work to Mughal-era commissions.',challenge:'Machine-cut stone now dominates construction. The artisanal carver depends on a narrow luxury and restoration market.',bg:'craft-bg-stone'},
+  {num:'08',title:'90,000 Knots',craft:'Carpet Weaving',risk:'stable',about:'A square foot of hand-knotted Jaipur carpet can hold 90,000 knots. Each one is tied, cut, and packed by hand.',history:'Brought by Mughal craftsmen in the 16th century. Jaipur carpets were exported to Europe from the 1880s under British patronage.',challenge:'Machine-loomed carpets are visually identical to hand-knotted work. Without certification, the artisan cannot distinguish their product.',bg:'craft-bg-carpet'},
+  {num:'09',title:'The Specialist Chain',craft:'Kundan Jewellery',risk:'stable',about:'One Kundan necklace passes through four specialists: chiterawala, jadiya, meenakaar, polisher. No one person holds the complete knowledge.',history:'India\'s most ancient goldsmithing technique. Jaipur\'s Paanch Deori district has been the Kundan capital for four centuries.',challenge:'As each speciality becomes less economically viable, the chain breaks. The complete skill set no longer exists in one place.',bg:'craft-bg-kundan'},
+];
+const faqs = [
+  {q:'Is Karigar a registered non-profit?',a:'Karigar is a non-commercial initiative. All proceeds from painting sales and donations go directly toward supporting featured artisans, funding workshops, and maintaining the digital archive. Registration details are available on request.'},
+  {q:'How are artisans selected for the exhibition?',a:'Artisans are selected based on the depth of their mastery, the risk level of their craft, and their willingness to participate in the documentation process. Priority is given to crafts with fewer active practitioners and to masters with distinctive, at-risk knowledge.'},
+  {q:'Can I acquire a specific painting from the exhibition?',a:'Yes. To inquire about acquiring a painting, please reach out via the contact form or email. Each painting comes with full documentation of the artisan, the craft, and the process shown in the work.'},
+  {q:'Can institutions host the Karigar exhibition?',a:'Yes — the exhibition is designed to travel. If you represent a cultural institution, foundation, hotel, or venue interested in hosting, please write to us with your proposal. We handle the full curation and installation.'},
+  {q:'How does donating help artisans directly?',a:'Donations fund three things: direct financial support and raw materials for featured masters; workshop funding for apprentices in at-risk crafts; and maintenance of the digital archive and geo-mapped platform. We share impact reports with major contributors.'},
+];
+
+// ── NAVIGATION ────────────────────────────────────────────────────────────────
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(l=>l.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  const btn=document.querySelector(`.nav-link[onclick="showPage('${id}')"]`);
+  if(btn)btn.classList.add('active');
+  window.scrollTo(0,0);
+  if(id==='map')initMap();
+  if(id==='archive')initArchive();
+  if(id==='exhibition')initExhibition();
+  if(id==='donate')initDonate();
+}
+
+// ── MAP ───────────────────────────────────────────────────────────────────────
+let mapInitialized=false;
+let activePin=null;
+let heatOn=false;
+function initMap(){
+  if(mapInitialized)return;
+  mapInitialized=true;
+  const pinsG=document.getElementById('craft-pins');
+  const list=document.getElementById('cluster-list');
+  const riskColors={critical:'#4a0c07',vulnerable:'#7a4c1a',stable:'#2a5e2a'};
+  crafts.forEach(c=>{
+    // SVG pin
+    const g=document.createElementNS('http://www.w3.org/2000/svg','g');
+    g.setAttribute('class','map-pin');
+    g.setAttribute('id','pin-'+c.id);
+    g.innerHTML=`
+      <circle class="pin-circle" cx="${c.px}" cy="${c.py}" r="10" fill="${riskColors[c.risk]}" opacity="0.9"/>
+      <circle cx="${c.px}" cy="${c.py}" r="14" fill="none" stroke="${riskColors[c.risk]}" stroke-width="1.5" opacity="0.4"/>
+      <circle cx="${c.px}" cy="${c.py}" r="4" fill="white" opacity="0.9"/>
+      <text class="pin-label" x="${c.px+16}" y="${c.py+4}" font-size="10" fill="#3d0b06" font-weight="500">${c.name}</text>
+    `;
+    g.addEventListener('click',()=>selectCraft(c.id));
+    pinsG.appendChild(g);
+    // Sidebar list item
+    const item=document.createElement('div');
+    item.className='cluster-item';
+    item.id='list-'+c.id;
+    item.innerHTML=`
+      <div class="cluster-item-header">
+        <span class="cluster-item-name">${c.name}</span>
+        <span class="risk-badge risk-${c.risk}">${c.risk}</span>
+      </div>
+      <div class="cluster-item-area">${c.area}</div>
+    `;
+    item.addEventListener('click',()=>selectCraft(c.id));
+    list.appendChild(item);
+  });
+}
+function selectCraft(id){
+  const c=crafts.find(x=>x.id===id);
+  if(!c)return;
+  if(activePin){
+    document.getElementById('pin-'+activePin)?.classList.remove('active');
+    document.getElementById('list-'+activePin)?.classList.remove('active');
+  }
+  activePin=id;
+  document.getElementById('pin-'+id)?.classList.add('active');
+  document.getElementById('list-'+id)?.classList.add('active');
+  const dp=document.getElementById('detail-panel');
+  dp.classList.add('visible');
+  document.getElementById('dp-name').textContent=c.name;
+  document.getElementById('dp-master').textContent=`${c.master} · ${c.lineage}`;
+  document.getElementById('dp-desc').textContent=c.description;
+  document.getElementById('dp-grid').innerHTML=`
+    <div class="detail-row"><div class="detail-key">Specialisation</div><div class="detail-val">${c.specialization}</div></div>
+    <div class="detail-row"><div class="detail-key">Complexity</div><div class="detail-val">${c.complexity}</div></div>
+    <div class="detail-row"><div class="detail-key">Wait time</div><div class="detail-val">${c.waitTime}</div></div>
+    <div class="detail-row"><div class="detail-key">Price range</div><div class="detail-val">${c.priceRange}</div></div>
+    <div class="detail-row"><div class="detail-key">Payment</div><div class="detail-val">${c.payment}</div></div>
+    <div class="detail-row"><div class="detail-key">Shipping</div><div class="detail-val">${c.shipping}</div></div>
+  `;
+  document.getElementById('list-'+id).scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function toggleHeat(){
+  heatOn=!heatOn;
+  const toggle=document.getElementById('heat-toggle');
+  toggle.classList.toggle('on',heatOn);
+  document.querySelectorAll('.heat-overlay').forEach(el=>el.classList.toggle('visible',heatOn));
+}
+
+// ── ARCHIVE ────────────────────────────────────────────────────────────────────
+let archiveInit=false;
+function initArchive(){
+  if(archiveInit)return;archiveInit=true;
+  const vg=document.getElementById('video-grid');
+  const patternColors=['craft-bg-bluepottery','craft-bg-blockprint','craft-bg-miniature','craft-bg-leheriya','craft-bg-lac','craft-bg-meenakari'];
+  videos.forEach((v,i)=>{
+    vg.innerHTML+=`
+      <div class="video-card">
+        <div class="video-thumb ${patternColors[i%patternColors.length]}">
+          <div class="video-play-btn"><div class="video-play-icon"></div></div>
+        </div>
+        <div class="video-type">${v.type} · ${v.duration}</div>
+        <div class="video-title">${v.title}</div>
+        <div class="video-craft">${v.craft} · ${v.master}</div>
+      </div>`;
+  });
+  const dg=document.getElementById('doc-grid');
+  docs.forEach(d=>{
+    dg.innerHTML+=`
+      <div class="doc-card">
+        <div class="doc-icon">${d.icon}</div>
+        <div class="doc-type">${d.type}</div>
+        <div class="doc-title">${d.title}</div>
+        <div class="doc-desc">${d.desc}</div>
+      </div>`;
+  });
+}
+function switchTab(name,btn){
+  document.querySelectorAll('.archive-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.archive-tab-content').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
+}
+
+// ── EXHIBITION ────────────────────────────────────────────────────────────────
+let exhibInit=false;
+function initExhibition(){
+  if(exhibInit)return;exhibInit=true;
+  const g=document.getElementById('exhibition-grid');
+  const allPaintings=[...paintingData];
+  // Fill to 12 cards
+  while(allPaintings.length<12){
+    const src=paintingData[allPaintings.length%paintingData.length];
+    const extra={...src,num:String(allPaintings.length+1).padStart(2,'0'),title:src.title+' II'};
+    allPaintings.push(extra);
+  }
+  allPaintings.forEach((p,i)=>{
+    const card=document.createElement('div');
+    card.className='painting-card';
+    card.innerHTML=`
+      <div class="painting-art">
+        <div class="painting-art-inner ${p.bg}" style="display:flex;align-items:center;justify-content:center;">
+          <div style="opacity:0.3;font-family:'Playfair Display',serif;font-size:2.5rem;color:#64130b;">${p.num}</div>
+        </div>
+      </div>
+      <div class="painting-info">
+        <div class="painting-num">Painting ${p.num}</div>
+        <div class="painting-title">${p.title}</div>
+        <div class="painting-craft">${p.craft}</div>
+        <div class="painting-footer">
+          <span class="risk-badge risk-${p.risk}">${p.risk}</span>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <span class="qr-hint">QR</span>
+            <div class="qr-icon">
+              <div class="qr-square"></div><div></div>
+              <div></div><div class="qr-square"></div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+    card.addEventListener('click',()=>openModal(paintingData[i%paintingData.length]));
+    g.appendChild(card);
+  });
+}
+function openModal(p){
+  document.getElementById('modal-craft').textContent=p.craft+' · Painting '+p.num;
+  document.getElementById('modal-title').textContent=p.title;
+  document.getElementById('modal-about').textContent=p.about;
+  document.getElementById('modal-history').textContent=p.history;
+  document.getElementById('modal-challenge').textContent=p.challenge;
+  document.getElementById('modal-badge').innerHTML=`<span class="risk-badge risk-${p.risk}">${p.risk} risk</span>`;
+  document.getElementById('modal-art').className=`modal-art ${p.bg}`;
+  document.getElementById('painting-modal').classList.add('open');
+}
+function closeModal(e){
+  if(e.target===document.getElementById('painting-modal'))
+    document.getElementById('painting-modal').classList.remove('open');
+}
+
+// ── DONATE ────────────────────────────────────────────────────────────────────
+let donateInit=false;
+function initDonate(){
+  if(donateInit)return;donateInit=true;
+  const fl=document.getElementById('faq-list');
+  faqs.forEach(f=>{
+    const item=document.createElement('div');
+    item.className='faq-item';
+    item.innerHTML=`<div class="faq-q">${f.q}<span class="faq-toggle">+</span></div><div class="faq-a">${f.a}</div>`;
+    item.querySelector('.faq-q').addEventListener('click',()=>{
+      item.classList.toggle('open');
+      item.querySelector('.faq-toggle').textContent=item.classList.contains('open')? '−':'+';
+    });
+    fl.appendChild(item);
+  });
+}
+</script>
+</body>
+</html>
